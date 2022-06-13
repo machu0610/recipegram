@@ -1,0 +1,109 @@
+<section class="hero is-success">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        マイページ
+      </h1>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="columns is-centered">
+          <div class="column is-4">
+            <figure class="image is-128x128"  style="margin-left: auto; margin-right: auto;">
+              <%= attachment_image_tag @user, :profile_image, fallback: "no-image.png", class: "profile_image is-rounded" %>
+            </figure>
+          </div>
+          <div class="column is-8">
+            <table class="table is-fullwidth">
+              <tr>
+                <td class="is-size-4">
+                  <strong><%= @user.username %></strong>
+                </td>
+                <% if @user.id == current_user.id %>
+                <%#もし詳細画面を表示しているユーザとログインユーザーが一致していたらメールを表示する%>
+                <td class="is-size-4">
+                  <%= @user.email %>
+                </td>
+                <td>
+                    <%= link_to "編集", edit_user_path(@user), class: "button is-primary" %>
+                    <%#どのユーザーの変種画面にいくかが大事なのでuserを引数として入れておく%>
+                </td>
+                <% end %>
+              </tr>
+            </table>
+            <table class="table is-fullwidth">
+              <tr>
+                <td>
+                  <%= @user.profile %>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline">
+      <% @user.recipes.each do |recipe| %>
+      <%#recipesとすると一人が投稿したレシピを全て取ってきて全て表示する %>
+        <div class="column is-4">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <%= link_to recipe_path(recipe) do %>
+                <%#レシピの詳細画面にいくリンク%>
+                  <%= attachment_image_tag recipe, :image, fallback: "no-image.png" %>
+                  <%#フォントオーサムを使用したいので doとend でカッコっている%>
+                <% end %>
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-content">
+                  <%= link_to recipe_path(recipe), class: "panel-block" do %>
+                  <%#レシピの詳細画面にいくリンク%>
+                    <span class="panel-icon">
+                      <i class="fas fa-book" aria-hidden="true"></i>
+                    </span>
+                    このレシピを見る
+                  <% end %>
+                  <% if @user.id == current_user.id %>
+                  <%#もし投稿した人とログインユーザーが一致したらしたを表示する%>
+                    <%= link_to edit_recipe_path(recipe), class: "panel-block" do %>
+                    <%#レシピの編集画面にいくリンク%>
+                      <span class="panel-icon">
+                        <i class="fas fa-edit"></i>
+                      </span>
+                      このレシピを編集する
+                    <% end %>
+                    <%= link_to recipe_path(recipe), method: :delete, data: {confirm: "削除しますか？"}, class: "panel-block" do %>
+                    <%#レシピを削除するリンク%>
+                    <%#data: {confirm: "削除しますか？"}を使うことによって一回で削除できないようになっている。%>
+                      <span class="panel-icon">
+                        <i class="fas fa-trash"></i>
+                      </span>
+                      このレシピを削除する
+                    <% end %>
+                  <% end %>
+                </div>
+              </div>
+              <div class="content">
+                <time><%= recipe.updated_at.strftime("%Y-%m-%d %H:%M") %></time>更新
+                <%#レシピの更新日が必要だから記載%>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

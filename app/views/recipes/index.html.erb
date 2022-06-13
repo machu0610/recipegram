@@ -1,0 +1,56 @@
+<section class="hero is-success">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        レシピ一覧
+      </h1>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline">
+      <% @recipes.each do |recipe| %>
+        <div class="column is-4">
+          <div class="card">
+            <div class="card-image">
+              <figure class="image is-4by3">
+                <%= link_to recipe_path(recipe) do %>
+                <%#レシピの詳細画面にいくリンクでどの詳細画面にいくかは(recipe)である%>
+                  <%= attachment_image_tag recipe, :image %>
+                  <%#@recipeの中にある画像を表示させたいので上記の書き方%>
+                <% end %>
+              </figure>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-left">
+                  <figure class="image is-48x48">
+                    <%= link_to user_path(recipe.user.id) do %>
+                    <%#ユーザーの詳細画面にリンクでどのユーザーの詳細画面にいくかは(recipe)である%>
+                      <%= attachment_image_tag recipe.user, :profile_image, fallback: "no-image.png", class: "profile_image" %>
+                      <%#recipe.userはrecipeに紐付いているuserという意味でfallback:はデフォルトでイメージ画像がない場合は後ろのイメージを表示させるという意味%>
+                    <% end %>
+                  </figure>
+                </div>
+                <div class="media-content">
+                  <div class="title"><%=link_to recipe.user.username, user_path(recipe.user.id) %></div>
+                  <%#recipeに紐付いているユーザーを取ってきたいので%>
+                  <%#recipe.userはrecipeに紐付いているuserを取ってくる、その後ろにusernameとあるのは名前を表示させる%>
+                </div>
+              </div>
+
+              <div class="content">
+                <time><%= recipe.updated_at.strftime("%Y-%m-%d %H:%M") %></time>更新
+                <%#recipeの更新日時を取ってくる%>
+                <%#.strftime("%Y-%m-%d %H:%M")は日本時間に変更するための記述%>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+

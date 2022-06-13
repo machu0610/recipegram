@@ -1,0 +1,51 @@
+<section class="hero is-success">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        レシピ編集
+      </h1>
+    </div>
+  </div>
+</section>
+
+<% if @recipe.errors.any? %>
+<%#@recipeにエラーの内容が含まれているかどうかを判定する%>
+  <div class="notification is-danger">
+    <h2><%= pluralize(@recipe.errors.count, "error") %> prohibited this object from being saved: not successfully</h2>
+    <%#pluralizeメソッドは単語の複数形や単数系を判定してくれる。%>
+    <%#"error"は一つの時は単数系で二つ以上の場合は複数形に変える%>
+    <%#使い方はpluralizeの後に@recipe.errors.countエラーの数をカウントしてそれに応じて"error"を変える%>
+    <ul>
+      <% @recipe.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-6">
+        <%= form_for @recipe do |f| %>
+          <div class="field">
+            <%= f.label :title, "レシピ名", class: "label" %>
+            <%= f.text_field :title, class: "input" %>
+          </div>
+
+          <div class="field">
+            <%= f.label :body, "作り方", class: "label" %>
+            <%= f.text_area :body, class: "textarea" %>
+          </div>
+
+          <div class="field">
+            <%= f.label :image, "写真", class: "label" %>
+            <%= f.attachment_field :image, class: "input" %>
+          </div>
+
+          <%= f.submit '更新', class: "button is-success" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>

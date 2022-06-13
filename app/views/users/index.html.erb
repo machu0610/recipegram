@@ -1,0 +1,49 @@
+<section class="hero is-success">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        レシピグラマー一覧
+      </h1>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-multiline">
+      <% @users.each do |user| %>
+      <%#@user変数から一人一人取り出して変数userに格納%>
+      <div class="column is-3">
+        <div class="card">
+          <div class="card-content">
+            <div class="card-image">
+              <figure class="image">
+                <%= link_to user_path(user) do %>
+                <%#どのuserのパスに行きたいかなのでuserと書く%>
+                  <%= attachment_image_tag user, :profile_image, fallback: "no-image.png" %>
+                  <%#attachment_image_tagはimageタグと同じ%>
+                  <%#userはどこから取ってくるかなので@usersで一つひとつ格納されているのがuserなのでuserを記入%>
+                  <%#どのカラムを使用するかなのでprofile_image%>
+                  <%#fallback:は何も画像が設定されていなかったら後ろのファイルを実行する%>
+                  <% end %>
+                </figure>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="media">
+                <div class="media-content">
+                  <div class="title"><%=link_to user.username, user_path(user)%></div>
+                                    <%#userの中に一人の情報が入っているのでusernameが取ってこれる %>
+                </div>
+              </div>
+              <div class="content">
+                投稿数:<%= user.recipes.count %>
+                <%#ユーザーに紐付いているレシピをカウントする%>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
